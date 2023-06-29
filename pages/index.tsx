@@ -1,17 +1,16 @@
-
 import { Inter } from 'next/font/google'
-import { createContext, useContext, useState, useEffect} from 'react'
+import { useState, useEffect} from 'react'
 import { useRouter } from 'next/router'
 import { NextPageContext } from "next"
-import { getSession } from "next-auth/react"
+import { getSession, useSession } from "next-auth/react"
 import NavBar from '../components/NavBar'
-import useCurrentUser from '@/hooks/useCurrentUser'
+import useCurrentUser from '../hooks/useCurrentUser'
 const inter = Inter({ subsets: ['latin'] });
 
 
 export async function getServerSideProps(context: NextPageContext){
   const session = await getSession(context);
-console.log(session)
+
 
   if(!session){
     return {
@@ -24,30 +23,26 @@ console.log(session)
   }
 
   return {
-    props:{}
+    props:{session}
   }
 }
 
 
 export default function Home() {
-const data = useCurrentUser();
-   const router = useRouter()
-const [email,setEmail] = useState(null)
+
+
+   const router = useRouter();
+const {data: session} = useSession();
+const [eMail,seteMail] = useState(null);
    
-  // if (typeof window !== 'undefined') {
-  //   // Perform localStorage action
-  //   const item = localStorage.getItem('state')
-  //   const sitem = sessionStorage.getItem('state')
-  //   if(item === 'logout' || !item){
-  //     router.push('login');
-  //   }
-    
-  // }
+
  useEffect(() => {
-  console.log('use: '+ email)
-  
-  setEmail(data?.data?.name)
- },[data])
+
+if(session)
+ seteMail(session.user.email)
+
+
+ },[session])
 
 
   return (
@@ -57,8 +52,14 @@ const [email,setEmail] = useState(null)
       className={`flex h-[100vh] flex-col items-center justify-content-center ${inter.className}`}
     >
   <NavBar/>
-    <h1>You are Logined</h1>
-    <h5>Logged in as: {data?.data?.email}</h5>
+    <div className='flex w-[500px] flex-col mt-[100px] border p-[100px] items-center justify-center'>
+
+    <h5>Logged in as: {eMail?eMail:'Loading...'}</h5>
+    <p>
+    {}
+    </p>
+    </div>
+ 
     </main>
   // </Context.Provider>
   )
