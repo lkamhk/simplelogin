@@ -27,17 +27,16 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function Home() {
 
 
-  const { data: session } = useSession();
+  const { data: session , status} = useSession();
   const [eMail, seteMail] = useState(null);
 
- function getUser() {
+
+
+
+  if (status === "authenticated") {
     seteMail(session.user.email)
   }
 
-
-useEffect(()=>{
-  getUser()
-},[])
 
   return (
       <>
