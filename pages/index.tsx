@@ -1,18 +1,14 @@
-import { Inter } from 'next/font/google'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { NextPageContext } from "next"
 import { getSession, useSession } from "next-auth/react"
 import NavBar from '../components/NavBar'
-import useCurrentUser from '../hooks/useCurrentUser'
-const inter = Inter({ subsets: ['latin'] });
 
 
 export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
+  const csession = await getSession(context);
 
 
-  if (!session) {
+  if (!csession) {
     return {
       redirect: {
         destination: '/login',
@@ -23,7 +19,7 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   return {
-    props: { }
+    props: {}
   }
 }
 
@@ -31,38 +27,29 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function Home() {
 
 
-  const router = useRouter();
   const { data: session } = useSession();
   const [eMail, seteMail] = useState(null);
 
+  async function getUser() {
+    seteMail(session.user.email)
+  }
 
-  useEffect(() => {
-
-  
-          let data = session.user.email || null
-
-      seteMail(data)
-
-
-  }, [session])
-
+useEffect(()=>{
+  getUser()
+},[])
 
   return (
-    // <Context.Provider value={userName}>
+      <>
 
-    <main
-      className={`flex h-[100vh] flex-col items-center justify-content-center ${inter.className}`}
-    >
+    <main className='flex h-[100vh] flex-col items-center justify-content-center'>
       <NavBar />
       <div className='flex w-[500px] flex-col mt-[100px] border p-[100px] items-center justify-center'>
 
         <h5>Logged in as: {eMail ? eMail : 'Loading...'}</h5>
-        <p>
-          { }
-        </p>
+
       </div>
 
     </main>
-    // </Context.Provider>
-  )
+    </>
+  );
 }
