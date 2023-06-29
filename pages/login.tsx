@@ -1,16 +1,11 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { NextPageContext } from 'next';
 import { getSession, signIn } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa';
 
-// import Context from '@/hooks/Context'
-import { Message_data } from "@/hooks/Context";
 import NavBar from '../components/NavBar'
-import { log } from 'console'
 import Input from '@/components/Input';
 import axios from 'axios';
 

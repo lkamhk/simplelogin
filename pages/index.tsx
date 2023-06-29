@@ -1,10 +1,7 @@
-import Image from 'next/image'
+
 import { Inter } from 'next/font/google'
 import { createContext, useContext, useState, useEffect} from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-// import Context from '@/hooks/Context'
-import { Message_data } from "@/hooks/Context";
 import { NextPageContext } from "next"
 import { getSession } from "next-auth/react"
 import NavBar from '../components/NavBar'
