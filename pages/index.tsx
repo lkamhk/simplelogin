@@ -30,9 +30,10 @@ export default function Home() {
   const { data: session } = useSession();
   const [eMail, seteMail] = useState(null);
 
-  async function getUser() {
+ function getUser() {
     seteMail(session.user.email)
   }
+
 
 useEffect(()=>{
   getUser()
