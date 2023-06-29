@@ -23,7 +23,7 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   return {
-    props: { session }
+    props: { }
   }
 }
 
@@ -38,8 +38,8 @@ export default function Home() {
 
   useEffect(() => {
 
-    if (session)
-      seteMail(session?.user?.email || null)
+  
+      seteMail(session?.user?.email)
 
 
   }, [session])
