@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Message_data } from '@/hooks/Context'
 import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 const NavBar = () => {
