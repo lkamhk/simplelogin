@@ -33,10 +33,6 @@ export default function Home() {
 
 
 
-  if (status === "authenticated") {
-    seteMail(session.user.email)
-  }
-
 
   return (
       <>
@@ -45,8 +41,8 @@ export default function Home() {
       <NavBar />
       <div className='flex w-[500px] flex-col mt-[100px] border p-[100px] items-center justify-center'>
 
-        <h5>Logged in as: {eMail ? eMail : 'Loading...'}</h5>
-
+        {/* <h5>Logged in as: {eMail ? eMail : 'Loading...'}</h5> */}
+        <h5>Logged in as: {session?.user?.email}</h5>
       </div>
 
     </main>
