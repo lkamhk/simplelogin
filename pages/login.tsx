@@ -32,11 +32,12 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 
-const login = () => {
+const Login = () => {
 
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPW] = useState('')
+  const [wrong,setWrong] = useState('')
   // const { message, setMessage, isBack, setisBack } = useContext(Message_data);
 
   const [variant, setVariant] = useState('login')
@@ -69,16 +70,17 @@ const login = () => {
     const formalRegex = /^[a-zA-Z0-9]+$/;
     const emailRegex = /^\S+@\S+\.\S+$/;
     let timer;
+    
 
 
-    const wrongInput = document.querySelector('#wrongInput')
 
     if (!email.match(emailRegex) || !password.match(formalRegex)  ) {
-        
+   
         clearTimeout(timer)
-        wrongInput.innerText = `invalid input`
+        setWrong('invalid input')
+      
         timer = setTimeout(() =>{
-          wrongInput.innerText = ``
+          setWrong('')
         },2000)
         return
       }
@@ -105,7 +107,7 @@ const login = () => {
           <div className='w-[500px] border mt-[20%] p-10 rounded-[5px] shadow-md mb-[100px]'>
               
             <div className='flex flex-col w-[300px] top-0 bottom-0 left-0 right-0 m-auto gap-4'>
-            <div className="text-red-500 m-auto" id="wrongInput"></div>
+            <div className="text-red-500 m-auto" >{wrong?wrong:null}</div>
               {variant === 'register' && (
                 <Input
                   label="User name"
@@ -181,4 +183,4 @@ const login = () => {
   )
 };
 
-export default login;
+export default Login;
