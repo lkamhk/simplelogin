@@ -39,7 +39,7 @@ export default function Home() {
   useEffect(() => {
 
     if (session)
-      seteMail(session.user.email || null)
+      seteMail(session?.user?.email || null)
 
 
   }, [session])
