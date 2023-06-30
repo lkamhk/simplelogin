@@ -6,6 +6,7 @@ import { NextPageContext } from 'next';
 import { getSession, signIn } from 'next-auth/react';
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa';
+import Footer from '@/components/Footer'
 // import { Message_data } from "@/hooks/Context";
 import NavBar from '../components/NavBar'
 
@@ -35,18 +36,21 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPW] = useState('')
-  const [wrong,setWrong] = useState('')
+  const [wrong, setWrong] = useState('')
+  const [ischecked, setIsChecked] = useState(false)
+  const [variant, setVariant] = useState('login')
+
+  const router = useRouter();
   // const { message, setMessage, isBack, setisBack } = useContext(Message_data);
 
-  const [variant, setVariant] = useState('login')
 
   const toggleVariant = useCallback(() => {
     setVariant((currentVariant) =>
       currentVariant === 'login' ? 'register' : 'login'
     )
+
   }, [])
 
-  const router = useRouter();
 
   const auth = useCallback(async () => {
     try {
@@ -68,21 +72,30 @@ const Login = () => {
     const formalRegex = /^[a-zA-Z0-9]+$/;
     const emailRegex = /^\S+@\S+\.\S+$/;
     let timer;
-    
 
 
 
-    if (!email.match(emailRegex) || !password.match(formalRegex)  ) {
-   
-        clearTimeout(timer)
-        setWrong('invalid input')
-      
-        timer = setTimeout(() =>{
-          setWrong('')
-        },2000)
-        return
-      }
-    
+    if (!email.match(emailRegex)) {
+
+      clearTimeout(timer)
+      setWrong(`Please enter a valid email address.`)
+
+      timer = setTimeout(() => {
+        setWrong('')
+      }, 2000)
+      return
+    }
+
+    if (!password.match(formalRegex)) {
+
+      clearTimeout(timer)
+      setWrong(`Please enter a valid Password address(a-z 0-9)`)
+
+      timer = setTimeout(() => {
+        setWrong('')
+      }, 2000)
+      return
+    }
 
     try {
       await axios.post('/api/register', {
@@ -98,14 +111,40 @@ const Login = () => {
   }, [email, name, password, auth])
 
 
+  useEffect(() => {
+    const signupBtn = document.querySelector('#signupBtn');
+
+    if(variant === 'login'){
+      signupBtn.disabled = false;
+      setIsChecked(false)
+    }
+
+    if (variant === 'register'){
+
+      signupBtn.disabled = true;
+      if(ischecked){
+        signupBtn.disabled = false;
+      }
+     
+    }
+    
+
+  })
+
+
   return (
     <>
-      <div className='container-home h-[100vh]'>
-        <div className='flex justify-center items-center w-100 h-[100vh]'>
-          <div className='w-[500px] border mt-[20%] p-10 rounded-[5px] shadow-md mb-[100px]'>
-              
-            <div className='flex flex-col w-[300px] top-0 bottom-0 left-0 right-0 m-auto gap-4'>
-            <div className="text-red-500 m-auto" >{wrong?wrong:null}</div>
+      
+        <div className='flex flex-col justify-center items-center w-full h-full '>
+
+          <h1 className=' text-xl font-extrabold text mt-[50px]'>Simple Login</h1>
+
+          {/* login-form*/}
+          <div className='flex backdrop-blur-sm border my-[50px] p-10 rounded-[5px] shadow-md mb-[100px] xs:border-none xs:shadow-none xs:w-full xs:h-full '>
+
+            <div className='flex flex-col w-[300px] top-0 bottom-0 left-0 right-0 m-auto gap-4 '>
+              <h1 className='font-bold '> {variant === 'login' ? 'Sign in' : 'Sign up'} </h1>
+              <div className="text-red-500 m-auto text-base h-2" >{wrong ? wrong : null}</div>
               {variant === 'register' && (
                 <Input
                   label="User name"
@@ -133,21 +172,33 @@ const Login = () => {
                 value={password}
               />
 
+              {variant === 'register' && (
+                <>
+                  <div className='text-zinc-650'>
+                    <input type='checkbox' id="agree-privacy" className='inline'  onChange={()=> setIsChecked(!ischecked)}/>
+                    <span className='ml-2 text-sm'>I agree to the terms of <Link href='https://www.freeprivacypolicy.com/live/82510e13-8abc-44ce-9d6f-7b717f4fe72e' target='_blank' className='hover:underline'>the Privacy Policy</Link></span>
+                  </div>
+                </>
+              )}
+
               <button
                 onClick={variant === 'login' ? auth : register}
-                className="hover:bg-emerald-400
-                border rounded border-blue-300 w-[100px] p-2 text-zinc-600"
-              >
-                {variant === 'login' ? 'Login' : 'Sign up'}
-              </button>
-   
-              <div 
-                    onClick={()=> signIn('github',{callbackUrl: '/'})}
-                    className='
-                  w-10 
-                  h-10
+                className={`hover:bg-emerald-400
+                border rounded border-blue-300 w-[100px] p-2 text-zinc-650 mxs:w-full
+                disabled:opacity-40
+                disabled:hover:bg-transparent
+                `}
+                id='signupBtn' 
                 
-                  rounded-full
+              >
+                {variant === 'login' ? 'Login' : 'Submit'}
+              </button>
+
+              <div
+                onClick={() => signIn('github', { callbackUrl: '/' })}
+                className='
+                  w-full
+                  hover:scale-110
                   flex 
                   items-center
                   justify-center
@@ -155,28 +206,30 @@ const Login = () => {
                   hover:opacity-80
                   transition
                   m-auto
-                  '>  <FaGithub size={30}/> </div>
-                  
-
-
-              <p className="text-neutral-500 mx-5 mt-12  text-center">
-                {variant === 'login'
+                  '> Sign in with Github &nbsp; <FaGithub size={30} /> </div>
+              <p className="inline-block text-neutral-650 mx-5 mt-12  text-center text-sm">
+                <span> {variant === 'login'
                   ? 'No account yet ?'
-                  : 'Already have account?'}
+                  : 'Already have account?'}  </span>
                 <span
                   onClick={toggleVariant}
-                  className="text-white ml-2 hover:underline cursor-pointer"
+                  className=" text-zinc-900 ml-2 hover:underline cursor-pointer"
                 >
                   {variant === 'login' ? 'Create an account' : 'Login'}
                 </span>
               </p>
             </div>
+
+            <p></p>
           </div>
+          <p></p>
+          
         </div>
-      </div>
 
+      
+        <Footer/>
 
-
+        
     </>
   )
 };

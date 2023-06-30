@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { NextPageContext } from "next"
 import { getSession, useSession } from "next-auth/react"
 import NavBar from '../components/NavBar'
+import Clock from '@/components/Clock'
+import { visitLexicalEnvironment } from 'typescript';
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -21,31 +23,28 @@ export async function getServerSideProps(context: NextPageContext) {
   return {
     props: {}
   }
-}
+};
+
 
 
 export default function Home() {
 
 
-  const { data: session , status} = useSession();
-  const [eMail, seteMail] = useState(null);
-
+  const { data: session, status } = useSession();
 
 
 
 
   return (
-      <>
-
-    <main className='flex h-[100vh] flex-col items-center justify-content-center'>
+    <>
       <NavBar />
-      <div className='flex w-[500px] flex-col mt-[100px] border p-[100px] items-center justify-center'>
+      <div className='flex w-full h-full flex-col items-center justify-center '>
+        <div className='m-10'><Clock /></div>
 
-        {/* <h5>Logged in as: {eMail ? eMail : 'Loading...'}</h5> */}
-        <h5>Logged in as: {session?.user?.email}</h5>
+        <h5 className='text-zinc-500'>Logged in as: &nbsp;<p className='inline text-zinc-700 font-bold'>{session?.user?.email}</p></h5>
+
+
       </div>
-
-    </main>
     </>
   );
 }

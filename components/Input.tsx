@@ -48,8 +48,8 @@ const Input: React.FC<InputProps> = ({
        left-6
        -translate-y-3
        peer-placeholder-shown: scale-50
-        peer-placeholder-shown: -translate-y-4
-         peer-focus:scale-75
+        peer-placeholder-shown: -translate-y-3
+         peer-focus:scale-50
          peer-focus:-translate-y-4`}
 
         htmlFor={id}>

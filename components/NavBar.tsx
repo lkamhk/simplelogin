@@ -8,17 +8,17 @@ const NavBar = () => {
 
   return (
     <>
-      <div className='absolute bg-black w-full h-[50px] opacity-20'></div>
-        <div className="flex w-full h-[50px] items-center justify-between">
-          <div className='ml-[10px] '> <h1 className='font-bold text-xl'>Simple Login</h1></div>
-          <div className="fixed  right-5 z-10">
+ 
+        <div className='flex bg-zinc-700 text-white items-center justify-between p-5'>
 
-            <button onClick={() => {signOut()}} className="inline-block mx-2 border border-black rounded-[5px] bg-white  shadow-sm p-[10px] text-zinc-900 text-sm cursor-pointer ">
-              Logout
-            </button>
-          </div>
+            <div className='ml-[10px] '> <h1 className='font-bold text-xl raleway'>Simple Login</h1></div>
+            
+
+              <button onClick={() => { signOut() }} className="inline-block mx-2 borde rounded-[15px] bg-zinc-300  shadow-sm p-[10px] text-zinc-500 text-sm font-semibold cursor-pointer ">
+                Logout
+              </button>
+    
         </div>
-      
     </>
   )
 }
