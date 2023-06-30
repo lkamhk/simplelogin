@@ -85,16 +85,6 @@ const Login = () => {
     }
   }, [email, name, password, auth])
 
-  useEffect(() => {
-
-    if(variant === 'login'){
-      setIsChecked(true)
-    }else if(variant === 'register'){
-      if(!true)
-      setIsChecked(false)
-    }
- 
-  })
   return (
     <>
       <div className='flex flex-col justify-center items-center w-full h-full '>
@@ -130,7 +120,7 @@ const Login = () => {
             {variant === 'register' && (
               <>
                 <div className='text-zinc-650'>
-                  <input type='checkbox' id="agree-privacy" className='inline' onChange={() => setIsChecked(!ischecked)} />
+                  <input type='checkbox' id="agree-privacy" className='inline' checked={ischecked?true:false} onChange={() => setIsChecked(!ischecked)} />
                   <span className='ml-2 text-sm'>I agree to the terms of <Link href='https://www.freeprivacypolicy.com/live/82510e13-8abc-44ce-9d6f-7b717f4fe72e' target='_blank' className='hover:underline'>the Privacy Policy</Link></span>
                 </div>
               </>
@@ -143,7 +133,7 @@ const Login = () => {
                 disabled:hover:bg-transparent
                 `}
               ref={btnRef}
-              disabled={!ischecked}
+              disabled={ variant === 'login' ?false : ischecked?false:true}
             >
               {variant === 'login' ? 'Login' : 'Submit'}
             </button>
